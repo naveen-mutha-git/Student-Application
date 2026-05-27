@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Login</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="form-box">
+        <h1>Student Login</h1>
+        <p>Login to your dashboard</p>
+
+        <input type="text" id="studentId" placeholder="Student ID">
+        <input type="email" id="email" placeholder="Email">
+
+        <button onclick="login()">Login</button>
+
+        <p class="bottom-text">
+            New user?
+            <a href="/">Sign Up</a>
+        </p>
+    </div>
+
+</div>
+
+<script>
+function login() {
+
+    let studentId = document.getElementById("studentId").value;
+    let email = document.getElementById("email").value;
+
+    fetch("/student/" + studentId)
+    .then(response => response.json())
+    .then(student => {
+
+        if(student.email === email) {
+
+            localStorage.setItem("studentId", student.id);
+
+            alert("Login successful!");
+            window.location.href = "/dashboard";
+
+        } else {
+            alert("Invalid email");
+        }
+
+    })
+    .catch(error => {
+        alert("Student not found");
+    });
+}
+</script>
+
+</body>
+</html>

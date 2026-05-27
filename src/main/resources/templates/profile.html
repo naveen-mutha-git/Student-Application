@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Profile</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Student Profile</h1>
+
+    <div class="profile-card" id="profileData">
+        Loading profile...
+    </div>
+
+    <br>
+
+    <a href="/dashboard">
+        <button>Back to Dashboard</button>
+    </a>
+
+</div>
+
+<script>
+let studentId = localStorage.getItem("studentId");
+
+console.log("Student ID:", studentId);
+
+if (!studentId) {
+    document.getElementById("profileData").innerHTML =
+        "<p>No student ID found. Please login again.</p>";
+} else {
+
+    fetch("/profile/" + studentId)
+    .then(response => {
+
+        if (!response.ok) {
+            throw new Error("Profile not found");
+        }
+
+        return response.json();
+    })
+    .then(profile => {
+
+        document.getElementById("profileData").innerHTML = `
+            <h2>👤 Student Profile</h2>
+            <p><strong>ID:</strong> ${profile.id}</p>
+            <p><strong>Address:</strong> ${profile.address}</p>
+            <p><strong>Phone:</strong> ${profile.phone}</p>
+            <p><strong>Gender:</strong> ${profile.gender}</p>
+        `;
+
+    })
+    .catch(error => {
+        document.getElementById("profileData").innerHTML = `
+            <p>${error.message}</p>
+        `;
+    });
+}
+</script>
+
+</body>
+</html>

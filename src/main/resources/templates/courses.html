@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Courses</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Courses</h1>
+
+    <table id="courseTable">
+        <tr>
+            <th>Course ID</th>
+            <th>Course Name</th>
+        </tr>
+    </table>
+
+    <br>
+    <a href="/dashboard">
+        <button>Back to Dashboard</button>
+    </a>
+
+</div>
+
+<script>
+fetch("/course/all")
+.then(response => response.json())
+.then(courses => {
+
+    let table = document.getElementById("courseTable");
+
+    courses.forEach(course => {
+        let row = `
+            <tr>
+                <td>${course.id}</td>
+                <td>${course.courseName}</td>
+            </tr>
+        `;
+        table.innerHTML += row;
+    });
+
+})
+.catch(error => {
+    alert("Error loading courses");
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grades</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Student Grades</h1>
+
+    <table id="gradeTable">
+        <tr>
+            <th>Subject</th>
+            <th>Marks</th>
+            <th>Grade</th>
+        </tr>
+    </table>
+
+    <br>
+    <a href="/dashboard">
+        <button>Back to Dashboard</button>
+    </a>
+
+</div>
+
+<script>
+fetch("/grade/all")
+.then(response => response.json())
+.then(grades => {
+
+    let table = document.getElementById("gradeTable");
+
+    grades.forEach(grade => {
+        let row = `
+            <tr>
+                <td>${grade.subject}</td>
+                <td>${grade.marks}</td>
+                <td>${grade.grade}</td>
+            </tr>
+        `;
+        table.innerHTML += row;
+    });
+
+})
+.catch(error => {
+    alert("Error loading grades");
+});
+</script>
+
+</body>
+</html>

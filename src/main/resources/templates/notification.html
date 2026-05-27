@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notifications</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>🔔 Notifications</h1>
+    <p class="subtitle">Latest updates for students</p>
+
+    <div id="notificationList">
+        <p>Loading notifications...</p>
+    </div>
+
+    <br>
+
+    <a href="/dashboard">
+        <button>Back to Dashboard</button>
+    </a>
+
+</div>
+
+<script>
+fetch("/notification/all")
+.then(response => response.json())
+.then(notifications => {
+
+    let list = document.getElementById("notificationList");
+    list.innerHTML = "";
+
+    // If no notifications
+    if (notifications.length === 0) {
+        list.innerHTML = `
+            <div class="notification-box">
+                <h3>📭 No Notifications</h3>
+                <p>You have no new notifications.</p>
+            </div>
+        `;
+        return;
+    }
+
+    // Display notifications
+    notifications.forEach(notification => {
+
+        let box = `
+            <div class="notification-box">
+                <h3>📢 ${notification.title}</h3>
+                <p>${notification.message}</p>
+            </div>
+        `;
+
+        list.innerHTML += box;
+    });
+
+})
+.catch(error => {
+
+    document.getElementById("notificationList").innerHTML = `
+        <div class="notification-box">
+            <h3>❌ Error</h3>
+            <p>Unable to load notifications. Please try again later.</p>
+        </div>
+    `;
+});
+</script>
+
+</body>
+</html>
